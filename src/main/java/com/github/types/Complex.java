@@ -2,6 +2,8 @@ package com.github.types;
 
 import java.math.BigDecimal;
 
+import static com.github.utility.BigDecimalFactory.halfScaled;
+
 public class Complex implements Cloneable {
     private BigDecimal realPart;
     private BigDecimal imaginaryPart;
@@ -20,7 +22,7 @@ public class Complex implements Cloneable {
     }
 
     public BigDecimal module_square() {
-        return realPart.multiply(realPart).add(imaginaryPart.multiply(imaginaryPart));
+        return halfScaled(realPart).multiply(halfScaled(realPart)).add(halfScaled(imaginaryPart).multiply(halfScaled(imaginaryPart)));
     }
 
     public Complex add(Complex complex) {
@@ -30,8 +32,8 @@ public class Complex implements Cloneable {
     }
 
     public Complex multiply(Complex complex) {
-        imaginaryPart = realPart.multiply(complex.imaginaryPart).add(imaginaryPart.multiply(complex.getRealPart()));
-        realPart = realPart.multiply(complex.getRealPart()).subtract(imaginaryPart.multiply(complex.getImaginaryPart()));
+        imaginaryPart = halfScaled(realPart).multiply(halfScaled(complex.imaginaryPart)).add(halfScaled(imaginaryPart).multiply(halfScaled(complex.getRealPart())));
+        realPart = halfScaled(realPart).multiply(halfScaled(complex.getRealPart())).subtract(halfScaled(imaginaryPart).multiply(halfScaled(complex.getImaginaryPart())));
         return this;
     }
 

@@ -144,7 +144,7 @@ public class MainWindow {
         int count = 0;
         BigDecimal module;
         do {
-            module = complex.module_square();
+            module = scaled(complex.module_square());
             complex.multiply(complex).add(initialComplex);
             count++;
         } while ((module.compareTo(BigDecimal.valueOf(2)) <= 0) && (count <= maxIter));

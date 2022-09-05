@@ -25,4 +25,9 @@ public final class BigDecimalFactory {
     }
 
 
+    public static BigDecimal halfScaled(BigDecimal val) {
+        return val.setScale(BIG_DECIMAL_SCALE/2, BIG_DECIMAL_ROUNDING_MODE);
+    }
+
+
 }

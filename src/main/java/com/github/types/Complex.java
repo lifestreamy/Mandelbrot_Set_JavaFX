@@ -32,8 +32,9 @@ public class Complex implements Cloneable {
     }
 
     public Complex multiply(Complex complex) {
+        BigDecimal real = halfScaled(realPart).multiply(halfScaled(complex.getRealPart())).subtract(halfScaled(imaginaryPart).multiply(halfScaled(complex.getImaginaryPart())));
         imaginaryPart = halfScaled(realPart).multiply(halfScaled(complex.imaginaryPart)).add(halfScaled(imaginaryPart).multiply(halfScaled(complex.getRealPart())));
-        realPart = halfScaled(realPart).multiply(halfScaled(complex.getRealPart())).subtract(halfScaled(imaginaryPart).multiply(halfScaled(complex.getImaginaryPart())));
+        realPart = real;
         return this;
     }
 

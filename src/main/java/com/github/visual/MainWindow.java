@@ -5,6 +5,7 @@ import com.github.fx.SyncProgressBar;
 import com.github.global_coefficients.CanvasProperties;
 import com.github.types.Complex;
 import com.github.types.ViewState;
+import com.github.utility.BigDecimalFactory;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -17,13 +18,12 @@ import javafx.scene.image.ImageView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.global_coefficients.InitialParameters.*;
-import static com.github.utility.BigDecimalFactory.scaled;
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
 
@@ -70,7 +70,7 @@ public class MainWindow {
         task = new PrintTask();
         canvas.setWidth(CanvasProperties.CANVAS_WIDTH);
         canvas.setHeight(CanvasProperties.CANVAS_HEIGHT);
-        setCoordsAndPrint(initialX1, initialX2, initialY1, initialY2, initialMaxIter);
+        setCoordsAndPrint(INITIAL_X_1, INITIAL_X_2, INITIAL_Y_1, INITIAL_Y_2, INITIAL_MAX_ITER);
         canvas.getGraphicsContext2D().setStroke(javafx.scene.paint.Color.GREEN);
         ScaleEventHandler eventHandler = new ScaleEventHandler(this::scale, canvas);
         canvas.setOnMousePressed(eventHandler);
@@ -144,33 +144,28 @@ public class MainWindow {
         int count = 0;
         BigDecimal module;
         do {
-            module = scaled(complex.module_square());
+            module = complex.module_square();
             complex.multiply(complex).add(initialComplex);
             count++;
-        } while ((module.compareTo(BigDecimal.valueOf(2)) <= 0) && (count <= maxIter));
+        } while ((module.compareTo(BigDecimal.valueOf(4)) <= 0) && (count <= maxIter));
         return count;
     }
 
     @FXML
     private void onClickPrint() {
-        ViewState viewState = history.peek();
-        if (history.size() > 0) {
-            setCoordsAndPrint(viewState.getX1(), viewState.getX2(), viewState.getY1(), viewState.getY2(),
-                    viewState.getMaxIter());
-        } else {
-            setCoordsAndPrint(scaled(-4), scaled(4), scaled(-2), scaled(2),
-                    viewState.getMaxIter());
-        }
-
+        setCoordsAndPrint(BigDecimalFactory.scaled(textX1.getText()),
+                BigDecimalFactory.scaled(textX2.getText()),
+                BigDecimalFactory.scaled(textY1.getText()),
+                BigDecimalFactory.scaled(textY2.getText()), Integer.parseInt(textMaxIter.getText()));
     }
 
     @FXML
     private void onClickReset() {
-        textX1.setText("-4.0");
-        textX2.setText("4.0");
-        textY1.setText("-2.0");
-        textY2.setText("2.0");
-        textMaxIter.setText("50");
+        textX1.setText(INITIAL_X_1.toString());
+        textX2.setText(INITIAL_X_2.toString());
+        textY1.setText(INITIAL_Y_1.toString());
+        textY2.setText(INITIAL_Y_2.toString());
+        textMaxIter.setText(String.valueOf(INITIAL_MAX_ITER));
         onClickPrint();
     }
 
@@ -245,17 +240,10 @@ public class MainWindow {
             }
             threadPool.shutdown();
             try{
-                threadPool.wait(100);
+                threadPool.awaitTermination(10L, TimeUnit.MINUTES);
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
-//            while (!threadPool.isTerminated()) {
-//                try {
-//                    Thread.sleep(100);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
             return null;
         }
     }

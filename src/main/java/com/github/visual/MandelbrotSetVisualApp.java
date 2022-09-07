@@ -8,12 +8,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Objects;
-
 /**
- * THE FOLLOWING PROGRAM EXAMPLE WAS MADE BY TIM KOCHETKOV WITH ASSISTANCE OF Michael B.
- * Michael's GitHub --- https://github.com/KolyanPie
- * TIM's GitHub --- https://github.com/TimofeyKochetkov
+ * Written by Tim Kochetkov and Michael Bilibin.
  */
+
+// TODO: 06/09/2022  Move all logic to model, following MVC pattern for JavaFX applications
 public class MandelbrotSetVisualApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -23,7 +22,7 @@ public class MandelbrotSetVisualApp extends Application {
         });
         primaryStage.setResizable(false);
         primaryStage.setTitle("Mandelbrot set visual test");
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/main_window.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/main_window.fxml")));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();

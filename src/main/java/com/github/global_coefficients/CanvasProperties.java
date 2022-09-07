@@ -1,7 +1,6 @@
 package com.github.global_coefficients;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import static com.github.global_coefficients.InitialParameters.BIG_DECIMAL_ROUNDING_MODE;
 import static com.github.utility.BigDecimalFactory.scaled;

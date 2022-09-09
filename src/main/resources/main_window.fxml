@@ -5,83 +5,93 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<AnchorPane prefHeight="600" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.visual.MainWindow">
-    <Pane layoutX="220.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="59.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="600.0" prefWidth="1105.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.visual.MainWindow">
+    <Pane layoutX="203.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="203.0" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="0.0">
         <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="900.0" />
         <Canvas fx:id="canvas" height="600.0" width="900.0" />
     </Pane>
-    <VBox layoutX="17.0" layoutY="56.0" spacing="80.0">
+    <VBox layoutY="57.0" spacing="60.0">
         <HBox>
             <VBox.margin>
-                <Insets/>
+                <Insets />
             </VBox.margin>
-            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="29.0"/>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="29.0">
+            <children>
+               <Label text="X1">
+                  <VBox.margin>
+                     <Insets top="4.0" />
+                  </VBox.margin>
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
+               </Label>
+               <Label text="X2">
+                  <VBox.margin>
+                     <Insets top="18.0" />
+                  </VBox.margin>
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
+               </Label>
+               <Label text="Y1">
+                  <VBox.margin>
+                     <Insets top="18.0" />
+                  </VBox.margin>
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
+               </Label>
+               <Label text="Y2">
+                  <VBox.margin>
+                     <Insets top="18.0" />
+                  </VBox.margin>
+                  <padding>
+                     <Insets left="10.0" />
+                  </padding>
+               </Label>
+            </children>
+            <padding>
+               <Insets top="-1.0" />
+            </padding></VBox>
             <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="112.0" spacing="10.0">
-                <TextField fx:id="textX1" promptText="X1"/>
-                <TextField fx:id="textX2" promptText="X2"/>
-                <TextField fx:id="textY1" promptText="Y1"/>
-                <TextField fx:id="textY2" promptText="Y2"/>
+                <TextField fx:id="textX1" alignment="CENTER" promptText="X1" />
+                <TextField fx:id="textX2" alignment="CENTER" promptText="X2" />
+                <TextField fx:id="textY1" alignment="CENTER" promptText="Y1" />
+                <TextField fx:id="textY2" alignment="CENTER" promptText="Y2" />
             </VBox>
         </HBox>
-        <HBox prefHeight="66.0" prefWidth="120.0" spacing="10.0">
+        <HBox spacing="10.0">
             <padding>
-                <Insets left="10.0"/>
+                <Insets left="30.0" />
             </padding>
             <VBox prefHeight="60.0" prefWidth="50.0" spacing="10.0">
-                <Button fx:id="buttonUndo" disable="true" mnemonicParsing="false" onAction="#onClickUndo"
-                        prefHeight="28.0" prefWidth="50.0" text="undo"/>
-                <Button fx:id="buttonRedo" disable="true" mnemonicParsing="false" onAction="#onClickRedo"
-                        prefHeight="28.0" prefWidth="50.0" text="redo"/>
+                <Button fx:id="buttonUndo" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#onClickUndo" prefHeight="28.0" prefWidth="50.0" text="undo" />
+                <Button fx:id="buttonRedo" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#onClickRedo" prefHeight="28.0" prefWidth="50.0" text="redo" />
             </VBox>
             <VBox spacing="10.0">
-                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onClickReset"
-                        prefHeight="28.0" prefWidth="50.0" text="reset"/>
-                <Button mnemonicParsing="false" onAction="#onClickPrint" prefHeight="28.0" prefWidth="50.0"
-                        text="print"/>
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#onClickReset" prefHeight="28.0" prefWidth="50.0" text="reset" />
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#onClickPrint" prefHeight="28.0" prefWidth="50.0" text="print" />
             </VBox>
         </HBox>
-        <VBox prefHeight="62.0" prefWidth="120.0" spacing="10.0">
-            <Label prefHeight="17.0" prefWidth="104.0" text="ITERATIONS">
+        <VBox prefHeight="100.0" prefWidth="120.0" spacing="10.0">
+            <Label alignment="CENTER" text="ITERATIONS">
                 <VBox.margin>
-                    <Insets left="10.0" top="10.0"/>
+                    <Insets left="52.0" top="10.0" />
                 </VBox.margin>
                 <opaqueInsets>
-                    <Insets/>
+                    <Insets />
                 </opaqueInsets>
-                <padding>
-                    <Insets left="20.0"/>
-                </padding>
             </Label>
-            <TextField fx:id="textMaxIter" prefHeight="25.0" prefWidth="100.0" text="50"/>
+            <TextField fx:id="textMaxIter" alignment="CENTER" maxWidth="112.0" text="50">
+            <VBox.margin>
+               <Insets left="30.0" />
+            </VBox.margin></TextField>
+           <Label fx:id="progressLabel" alignment="CENTER" prefHeight="17.0" prefWidth="104.0" textAlignment="CENTER" textFill="#219bff">
+            <VBox.margin>
+               <Insets left="33.0" />
+            </VBox.margin>
+         </Label>
         </VBox>
     </VBox>
-     <ProgressBar fx:id="progressBar" layoutX="66.0" layoutY="291.0" prefWidth="250" progress="0.0" rotate="-90.0" scaleX="2.0" scaleY="1.25" />
-     <Label fx:id="progressLabel" layoutX="35.0" layoutY="500.0" prefHeight="17.0" prefWidth="104.0" textAlignment="CENTER">
-      <textFill>
-         <LinearGradient>
-            <stops>
-               <Stop>
-                  <color>
-                     <Color red="0.08040935546159744" green="0.7236841917037964" blue="0.2519493103027344" />
-                  </color>
-               </Stop>
-               <Stop offset="0.007662835249042145">
-                  <color>
-                     <Color red="0.08040935546159744" green="0.7236841917037964" blue="0.2519493103027344" />
-                  </color>
-               </Stop>
-               <Stop offset="0.6398467432950191">
-                  <color>
-                     <Color />
-                  </color>
-               </Stop>
-               <Stop offset="1.0">
-                  <color>
-                     <Color />
-                  </color>
-               </Stop>
-            </stops>
-         </LinearGradient>
-      </textFill></Label>
+     <ProgressBar fx:id="progressBar" layoutX="48.0" layoutY="291.0" prefWidth="250" progress="0.0" rotate="-90.0" scaleX="2.0" scaleY="1.25" />
 </AnchorPane>

@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.global_coefficients.InitialParameters.*;
+import static com.github.utility.BigDecimalFactory.halfScaled;
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
 
@@ -78,18 +79,31 @@ public class MainWindow {
         canvas.setOnMouseReleased(eventHandler);
     }
 
+    /**
+     * used to transfer changes in border coordinates on canvas to changes in border coordinates on complex plane
+     */
     private void scale(double newX1, double newX2, double newY1, double newY2) {
 
         ViewState oldViewState = history.peek();
-
-        BigDecimal x1 = ((oldViewState.getX2().subtract(oldViewState.getX1())).multiply(new BigDecimal(String.valueOf(newX1 / imageWidth)))).add(oldViewState.getX1());
-        BigDecimal x2 = ((oldViewState.getX2().subtract(oldViewState.getX1())).multiply(new BigDecimal(String.valueOf(newX2 / imageWidth)))).add(oldViewState.getX1());
-        BigDecimal y1 = ((oldViewState.getY2().subtract(oldViewState.getY1())).multiply(new BigDecimal(String.valueOf(newY1 / imageWidth)))).add(oldViewState.getY1());
-        // y2 = k*(x2-x1) + y1    <--->    y2 is always on the main diagonal of the canvas
-        BigDecimal y2 = x2.subtract(x1).multiply(CanvasProperties.CANVAS_DIAGONAL_FACTOR_BIG_DECIMAL).add(y1);
-
+//        x1 = (view.x2 - view.x1) * newX1 / imageWidth + view.x1;
+//        x2 = (view.x2 - view.x1) * newX2 / imageWidth + view.x1;
+//        y1 = (view.y2 - view.y1) * newY1 / imageHeight + view.y1;
+//        y2 = (view.y2 - view.y1) * newY2 / imageHeight + view.y1;
+        BigDecimal oldX1 = oldViewState.getX1();
+        BigDecimal oldX2 = oldViewState.getX2();
+        BigDecimal oldY1 = oldViewState.getY1();
+        BigDecimal oldY2 = oldViewState.getY2();
+        BigDecimal x1 = (halfScaled(oldX2.subtract(oldX1)).multiply(halfScaled(newX1 / imageWidth))).add(oldX1);
+        BigDecimal x2 = (halfScaled(oldX2.subtract(oldX1)).multiply(halfScaled(newX2 / imageWidth))).add(oldX1);
+        BigDecimal y1 = (halfScaled(oldY2.subtract(oldY1)).multiply(halfScaled(newY1 / imageHeight))).add(oldY1);
+//        BigDecimal y2 = (halfScaled(oldY2.subtract(oldY1)).multiply(halfScaled(newY2 / imageHeight))).add(oldY1);
+        // y2 = k*(x2-x1) + y1    <--->   if fixed then y2 is always on the main diagonal of the canvas
+        BigDecimal y2 = halfScaled(x2.subtract(x1)).multiply(halfScaled(CanvasProperties.CANVAS_DIAGONAL_FACTOR_BIG_DECIMAL)).add(y1);
         setCoordsAndPrint(x1, x2, y1, y2, oldViewState.getMaxIter());
     }
+
+    // TODO: 09/09/2022 implement scaleOut() to pass to ScaleEventHandler for scaling out
+
 
     private void setCoordsAndPrint(BigDecimal x1, BigDecimal x2, BigDecimal y1, BigDecimal y2, int maxIter) {
         ViewState item = new ViewState(x1, x2, y1, y2, maxIter);
@@ -137,7 +151,7 @@ public class MainWindow {
      * THE FRACTAL RECTANGULAR BOUNDARIES CAN BE DESCRIBED BY A FOLLOWING PAIR OF POINTS (bot-left and top-right)
      * { {-2;-1*i} ; {1;i} } )
      * The resulting color of the point depends on number of jumps that it takes for THE MODULE of this point
-     * (after iterating its coordinates) to get more than or equal to 2
+     * (after iterating its coordinates) to get more than or equal to 4
      */
     private int jumpCount(Complex complex, int maxIter) {
         Complex initialComplex = complex.clone();
@@ -239,9 +253,9 @@ public class MainWindow {
                 });
             }
             threadPool.shutdown();
-            try{
+            try {
                 threadPool.awaitTermination(10L, TimeUnit.MINUTES);
-            }catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             return null;

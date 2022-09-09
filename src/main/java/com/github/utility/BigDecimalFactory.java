@@ -15,19 +15,31 @@ public final class BigDecimalFactory {
     }
 
     public static BigDecimal scaled(String val) {
-        BigDecimal x = new BigDecimal(val);
-        return x.setScale(BIG_DECIMAL_SCALE, BIG_DECIMAL_ROUNDING_MODE);
+        return new BigDecimal(val).setScale(BIG_DECIMAL_SCALE, BIG_DECIMAL_ROUNDING_MODE);
     }
 
     public static BigDecimal scaled(int val) {
-        BigDecimal x = new BigDecimal(val);
-        return x.setScale(BIG_DECIMAL_SCALE, BIG_DECIMAL_ROUNDING_MODE);
+        return new BigDecimal(val).setScale(BIG_DECIMAL_SCALE, BIG_DECIMAL_ROUNDING_MODE);
     }
 
+    public static BigDecimal scaled(double val) {
+        return new BigDecimal(val).setScale(BIG_DECIMAL_SCALE, BIG_DECIMAL_ROUNDING_MODE);
+    }
 
     public static BigDecimal halfScaled(BigDecimal val) {
-        return val.setScale(BIG_DECIMAL_SCALE/2, BIG_DECIMAL_ROUNDING_MODE);
+        return val.setScale(BIG_DECIMAL_SCALE / 2, BIG_DECIMAL_ROUNDING_MODE);
     }
 
+    public static BigDecimal halfScaled(String val) {
+        return new BigDecimal(val).setScale(BIG_DECIMAL_SCALE / 2, BIG_DECIMAL_ROUNDING_MODE);
+    }
+
+    public static BigDecimal halfScaled(int val) {
+        return new BigDecimal(val).setScale(BIG_DECIMAL_SCALE / 2, BIG_DECIMAL_ROUNDING_MODE);
+    }
+
+    public static BigDecimal halfScaled(double val) {
+        return new BigDecimal(val).setScale(BIG_DECIMAL_SCALE / 2, BIG_DECIMAL_ROUNDING_MODE);
+    }
 
 }

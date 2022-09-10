@@ -21,8 +21,12 @@ public class Complex implements Cloneable {
         this.imaginaryPart = imaginaryPart;
     }
 
-    public BigDecimal module_square() {
+    public BigDecimal module_square_half_scaled() {
         return halfScaled(realPart).multiply(halfScaled(realPart)).add(halfScaled(imaginaryPart).multiply(halfScaled(imaginaryPart)));
+    }
+
+    public BigDecimal module_square_full_scaled() {
+        return realPart.multiply(realPart).add(imaginaryPart.multiply(imaginaryPart));
     }
 
     public Complex add(Complex complex) {
@@ -31,9 +35,16 @@ public class Complex implements Cloneable {
         return this;
     }
 
-    public Complex multiply(Complex complex) {
+    public Complex multiply_half_scaled(Complex complex) {
         BigDecimal real = halfScaled(realPart).multiply(halfScaled(complex.getRealPart())).subtract(halfScaled(imaginaryPart).multiply(halfScaled(complex.getImaginaryPart())));
         imaginaryPart = halfScaled(realPart).multiply(halfScaled(complex.imaginaryPart)).add(halfScaled(imaginaryPart).multiply(halfScaled(complex.getRealPart())));
+        realPart = real;
+        return this;
+    }
+
+    public Complex multiply_full_scaled(Complex complex) {
+        BigDecimal real = realPart.multiply(complex.getRealPart()).subtract(imaginaryPart.multiply(complex.getImaginaryPart()));
+        imaginaryPart = realPart.multiply(complex.imaginaryPart).add(imaginaryPart.multiply(complex.getRealPart()));
         realPart = real;
         return this;
     }

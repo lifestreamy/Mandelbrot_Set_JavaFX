@@ -58,6 +58,15 @@
                 <TextField fx:id="textX2" alignment="CENTER" promptText="X2" />
                 <TextField fx:id="textY1" alignment="CENTER" promptText="Y1" />
                 <TextField fx:id="textY2" alignment="CENTER" promptText="Y2" />
+            <Label alignment="CENTER" contentDisplay="CENTER" text="BigDecimal Scale">
+               <VBox.margin>
+                  <Insets bottom="7.0" left="10.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="textScale" promptText="BigDecimal Scale">
+               <VBox.margin>
+                  <Insets top="-10.0" />
+               </VBox.margin></TextField>
             </VBox>
         </HBox>
         <HBox spacing="10.0">

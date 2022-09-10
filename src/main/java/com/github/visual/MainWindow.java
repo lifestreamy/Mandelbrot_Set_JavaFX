@@ -29,7 +29,7 @@ import static javafx.embed.swing.SwingFXUtils.toFXImage;
 
 
 public class MainWindow {
-    //region some fields
+    //region Class fields
     private Stack<ViewState> history;
     private Stack<ViewState> undoHistory;
     private PrintTask task;
@@ -37,6 +37,8 @@ public class MainWindow {
     private int imageWidth;
     private int imageHeight;
     private SyncProgressBar syncProgressBar;
+
+    private final int initialBigDecimalScale = BIG_DECIMAL_SCALE;
     //endregion
 
     //region FXML fields
@@ -62,16 +64,19 @@ public class MainWindow {
     private Button buttonUndo;
     @FXML
     private Button buttonRedo;
+    @FXML
+    private TextField textScale;
     //endregion
 
     public void initialize() {
         syncProgressBar = new SyncProgressBar(progressBar);
+        textScale.setText(String.valueOf(initialBigDecimalScale));
         history = new Stack<>();
         undoHistory = new Stack<>();
         task = new PrintTask();
         canvas.setWidth(CanvasProperties.CANVAS_WIDTH);
         canvas.setHeight(CanvasProperties.CANVAS_HEIGHT);
-        setCoordsAndPrint(INITIAL_X_1, INITIAL_X_2, INITIAL_Y_1, INITIAL_Y_2, INITIAL_MAX_ITER);
+        setCoordsAndPrint(INITIAL_X_1, INITIAL_X_2, INITIAL_Y_1, INITIAL_Y_2, INITIAL_MAX_ITER, BIG_DECIMAL_SCALE);
         canvas.getGraphicsContext2D().setStroke(javafx.scene.paint.Color.GREEN);
         ScaleEventHandler eventHandler = new ScaleEventHandler(this::scale, canvas);
         canvas.setOnMousePressed(eventHandler);
@@ -99,14 +104,14 @@ public class MainWindow {
 //        BigDecimal y2 = (halfScaled(oldY2.subtract(oldY1)).multiply(halfScaled(newY2 / imageHeight))).add(oldY1);
         // y2 = k*(x2-x1) + y1    <--->   if fixed then y2 is always on the main diagonal of the canvas
         BigDecimal y2 = halfScaled(x2.subtract(x1)).multiply(halfScaled(CanvasProperties.CANVAS_DIAGONAL_FACTOR_BIG_DECIMAL)).add(y1);
-        setCoordsAndPrint(x1, x2, y1, y2, oldViewState.getMaxIter());
+        setCoordsAndPrint(x1, x2, y1, y2, oldViewState.getMaxIter(), BIG_DECIMAL_SCALE);
     }
 
     // TODO: 09/09/2022 implement scaleOut() to pass to ScaleEventHandler for scaling out
 
 
-    private void setCoordsAndPrint(BigDecimal x1, BigDecimal x2, BigDecimal y1, BigDecimal y2, int maxIter) {
-        ViewState item = new ViewState(x1, x2, y1, y2, maxIter);
+    private void setCoordsAndPrint(BigDecimal x1, BigDecimal x2, BigDecimal y1, BigDecimal y2, int maxIter, int bigDecimalScale) {
+        ViewState item = new ViewState(x1, x2, y1, y2, maxIter, bigDecimalScale);
         if (history.size() > 0 && history.peek().equals(item)) {
             return;
         }
@@ -128,6 +133,7 @@ public class MainWindow {
         textY1.setText(viewState.getY1().toString());
         textY2.setText(viewState.getY2().toString());
         textMaxIter.setText(String.valueOf(viewState.getMaxIter()));
+        textScale.setText(String.valueOf(viewState.getBigDecimalScale()));
         task = new PrintTask();
         task.setOnSucceeded(event -> {
             imageView.setImage(toFXImage(bi, null));
@@ -158,8 +164,8 @@ public class MainWindow {
         int count = 0;
         BigDecimal module;
         do {
-            module = complex.module_square();
-            complex.multiply(complex).add(initialComplex);
+            module = complex.module_square_half_scaled();
+            complex.multiply_half_scaled(complex).add(initialComplex);
             count++;
         } while ((module.compareTo(BigDecimal.valueOf(4)) <= 0) && (count <= maxIter));
         return count;
@@ -170,7 +176,7 @@ public class MainWindow {
         setCoordsAndPrint(BigDecimalFactory.scaled(textX1.getText()),
                 BigDecimalFactory.scaled(textX2.getText()),
                 BigDecimalFactory.scaled(textY1.getText()),
-                BigDecimalFactory.scaled(textY2.getText()), Integer.parseInt(textMaxIter.getText()));
+                BigDecimalFactory.scaled(textY2.getText()), Integer.parseInt(textMaxIter.getText()), Integer.parseInt(textScale.getText()));
     }
 
     @FXML
@@ -180,6 +186,7 @@ public class MainWindow {
         textY1.setText(INITIAL_Y_1.toString());
         textY2.setText(INITIAL_Y_2.toString());
         textMaxIter.setText(String.valueOf(INITIAL_MAX_ITER));
+        textScale.setText(String.valueOf(initialBigDecimalScale));
         onClickPrint();
     }
 
@@ -216,7 +223,7 @@ public class MainWindow {
             syncProgressBar.setZero();
             syncProgressBar.setMaxVal(imageWidth * imageHeight);
             int maxIter = viewState.getMaxIter();
-
+            BIG_DECIMAL_SCALE = viewState.getBigDecimalScale();
             ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
             BigDecimal math_max_x = viewState.getX2();
             BigDecimal math_max_y = viewState.getY2();

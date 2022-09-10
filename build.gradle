@@ -13,6 +13,9 @@ repositories {
     maven {
         url "https://openjdk.java.net/projects/openjfx"
     }
+    maven {
+        url "https://jarcasting.com/artifacts/com.squareup.jnagmp/jnagmp/"
+    }
 }
 
 group 'com.github'
@@ -21,7 +24,7 @@ version '1.0-SNAPSHOT'
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-//    implementation 'org.openjfx:javafx:19-ea+11'
+    implementation 'com.squareup.jnagmp:jnagmp:3.0.0'
 }
 
 javafx {

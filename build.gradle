@@ -13,7 +13,11 @@ repositories {
     maven {
         url "https://openjdk.java.net/projects/openjfx"
     }
+    mavenLocal()
+    jcenter()
+    maven { url "https://jitpack.io" }
 }
+
 
 group 'com.github'
 version '1.0-SNAPSHOT'
@@ -22,6 +26,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 //    implementation 'org.openjfx:javafx:19-ea+11'
+//    implementation 'com.github.User:Repo:Tag'
+    implementation 'com.github.runtimeverification:mpfr-java:master-SNAPSHOT'
+//    implementation 'com.github.jitpack:gradle-simple:master-SNAPSHOT'
 }
 
 javafx {

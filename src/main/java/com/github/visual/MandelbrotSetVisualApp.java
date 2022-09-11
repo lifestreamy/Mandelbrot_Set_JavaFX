@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 
 // TODO: 06/09/2022  Move all logic to model, following MVC pattern for JavaFX applications
+// TODO: 11/09/2022 migrate to mpfr https://github.com/runtimeverification/mpfr-java
+//  https://gitlab.inria.fr/mpfr/mpfr
 public class MandelbrotSetVisualApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
